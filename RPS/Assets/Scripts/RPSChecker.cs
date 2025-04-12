@@ -10,6 +10,10 @@ public class RPSChecker : MonoBehaviour
 	[SerializeField] ResourceSet _resources = null;
 	[SerializeField] ImageSource _source = null;
 	[SerializeField] bool _useAsyncReadback = true;
+	[SerializeField] RawImage rock;
+	[SerializeField] RawImage paper;
+	[SerializeField] RawImage scissors;
+	
 	
 	HandPipeline _pipeline;
 	
@@ -71,8 +75,41 @@ public class RPSChecker : MonoBehaviour
 			pinky[i] = _pipeline.GetKeyPoint(i + 17);
 		}
 		
-		Vector3[][] fingers = {index,middle,ring,pinky};
+		//Debug.Log(extended);
 		
+		string gesture = getGesture();
+		
+		if (gesture == "Rock")
+		{
+			rock.gameObject.SetActive(true);
+			paper.gameObject.SetActive(false);
+			scissors.gameObject.SetActive(false);
+		}
+		else if (gesture == "Paper")
+		{
+			rock.gameObject.SetActive(false);
+			paper.gameObject.SetActive(true);
+			scissors.gameObject.SetActive(false);
+		}
+		else if (gesture == "Scissors")
+		{
+			rock.gameObject.SetActive(false);
+			paper.gameObject.SetActive(false);
+			scissors.gameObject.SetActive(true);
+		}
+		else
+		{
+			rock.gameObject.SetActive(false);
+			paper.gameObject.SetActive(false);
+			scissors.gameObject.SetActive(false);
+		}
+		
+		//Debug.Log(gesture);
+    }
+	
+	public string getGesture()
+	{
+		Vector3[][] fingers = {index,middle,ring,pinky};
 		extended = 0;
 		foreach (Vector3[] finger in fingers)
 		{
@@ -84,19 +121,22 @@ public class RPSChecker : MonoBehaviour
 		
 		if (extended == 0)
 		{
-			Debug.Log("Rock!");
+			return("Rock");
 		}
 		else if (extended == 2)
 		{
-			Debug.Log("Scissors!");
+			return("Scissors");
 		}
 		else if (extended == 4)
 		{
-			Debug.Log("Paper!");
+			return("Paper");
 		}
 		
-		//Debug.Log(extended);
-    }
+		else
+		{
+			return("None");
+		}
+	}
 	
     void OnDestroy()
       => _pipeline.Dispose();
