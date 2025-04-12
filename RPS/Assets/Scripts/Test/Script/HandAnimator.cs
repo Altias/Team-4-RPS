@@ -74,6 +74,7 @@ public sealed class HandAnimator : MonoBehaviour
         {
             var xform = CalculateJointXform(_pipeline.GetKeyPoint(i));
             Graphics.DrawMesh(_jointMesh, xform, _jointMaterial, layer);
+			
         }
 
         // Bones
