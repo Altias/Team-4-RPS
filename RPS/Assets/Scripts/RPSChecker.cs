@@ -17,13 +17,14 @@ public class RPSChecker : MonoBehaviour
 	
 	HandPipeline _pipeline;
 	
-	Vector3[] thumb;
-	Vector3[] index;
-	Vector3[] middle;
-	Vector3[] ring;
-	Vector3[] pinky;
+	private Vector3[] thumb;
+	private Vector3[] index;
+	private Vector3[] middle;
+	private Vector3[] ring;
+	private Vector3[] pinky;
 	
-	int extended;
+	private int extended;
+	private bool lockedIn;
 	
     // Start is called before the first frame update
     void Start()
@@ -31,6 +32,7 @@ public class RPSChecker : MonoBehaviour
 		_pipeline = new HandPipeline(_resources);
 		
 		extended = 0;
+		lockedIn = false;
 		
 	    thumb = new []{_pipeline.GetKeyPoint(1),_pipeline.GetKeyPoint(2),_pipeline.GetKeyPoint(3),_pipeline.GetKeyPoint(4)};
 		index = new []{_pipeline.GetKeyPoint(5),_pipeline.GetKeyPoint(6),_pipeline.GetKeyPoint(7),_pipeline.GetKeyPoint(8)};
@@ -45,34 +47,38 @@ public class RPSChecker : MonoBehaviour
         _pipeline.UseAsyncReadback = _useAsyncReadback;
         _pipeline.ProcessImage(_source.Texture);
 		
-		//Thumb update
-		for(int i = 0; i < 4; i++)
+		if (!lockedIn)
 		{
-			thumb[i] = _pipeline.GetKeyPoint(i + 1);
-		}
 		
-		//Index update
-		for(int i = 0; i < 4; i++)
-		{
-			index[i] = _pipeline.GetKeyPoint(i + 5);
-		}
+			//Thumb update
+			for(int i = 0; i < 4; i++)
+			{
+				thumb[i] = _pipeline.GetKeyPoint(i + 1);
+			}
 		
-		//Middle update
-		for(int i = 0; i < 4; i++)
-		{
-			middle[i] = _pipeline.GetKeyPoint(i + 9);
-		}
+			//Index update
+			for(int i = 0; i < 4; i++)
+			{
+				index[i] = _pipeline.GetKeyPoint(i + 5);
+			}
 		
-		//Ring update
-		for(int i = 0; i < 4; i++)
-		{
-			ring[i] = _pipeline.GetKeyPoint(i + 13);
-		}
+			//Middle update
+			for(int i = 0; i < 4; i++)
+			{
+				middle[i] = _pipeline.GetKeyPoint(i + 9);
+			}
 		
-		//Pinky update
-		for(int i = 0; i < 4; i++)
-		{
-			pinky[i] = _pipeline.GetKeyPoint(i + 17);
+			//Ring update
+			for(int i = 0; i < 4; i++)
+			{
+				ring[i] = _pipeline.GetKeyPoint(i + 13);
+			}
+		
+			//Pinky update
+			for(int i = 0; i < 4; i++)
+			{
+				pinky[i] = _pipeline.GetKeyPoint(i + 17);
+			}
 		}
 		
 		//Debug.Log(extended);
@@ -140,4 +146,17 @@ public class RPSChecker : MonoBehaviour
 	
     void OnDestroy()
       => _pipeline.Dispose();
+	
+	public void lockIn()
+	{
+		if (!lockedIn)
+		{
+			lockedIn = true;
+		}
+		
+		else
+		{
+			lockedIn = false;
+		}
+	}
 }
