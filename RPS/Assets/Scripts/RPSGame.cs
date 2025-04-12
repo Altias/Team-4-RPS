@@ -14,8 +14,14 @@ public class RPSGame : MonoBehaviour
 	[SerializeField] RawImage scissors;
 	[SerializeField] TextMeshProUGUI resultDisplay;
 	[SerializeField] GameObject resultBg;
+	[SerializeField] TextMeshProUGUI playerScoreDisplay;
+	[SerializeField] TextMeshProUGUI aiScoreDisplay;
+	
 	
 	RawImage[] choices;
+	
+	int playerScore;
+	int aiScore;
 	
 	string playerGesture;
 	int result;
@@ -27,6 +33,9 @@ public class RPSGame : MonoBehaviour
 		replayBtn.onClick.AddListener(ResetGame);
 		
 		choices = new []{rock,paper,scissors};
+		
+		playerScore = 0;
+		aiScore = 0;
     }
 
     // Update is called once per frame
@@ -101,11 +110,13 @@ public class RPSGame : MonoBehaviour
 			{
 				resultDisplay.text = "You Win!";
 				resultDisplay.color = Color.green;
+				playerScore++;
 			}
 			else if (result == 1) //Loss
 			{
 				resultDisplay.text = "You Lose!";
 				resultDisplay.color = Color.red;
+				aiScore++;
 			}
 			else //Draw
 			{
@@ -115,6 +126,8 @@ public class RPSGame : MonoBehaviour
 			
 			resultBg.SetActive(true);
 			resultDisplay.gameObject.SetActive(true);
+			
+			UpdateScores();
 			
 			
 		}
@@ -139,5 +152,11 @@ public class RPSGame : MonoBehaviour
 		replayBtn.gameObject.SetActive(false);
 		resultBg.SetActive(false);
 		resultDisplay.gameObject.SetActive(false);
+	}
+	
+	void UpdateScores()
+	{
+		playerScoreDisplay.text = playerScore.ToString();
+		aiScoreDisplay.text = aiScore.ToString();
 	}
 }
